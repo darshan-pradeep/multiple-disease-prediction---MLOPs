@@ -20,15 +20,21 @@ heart_disease_model = pickle.load(open(f'{working_dir}/saved_models/heart_diseas
 
 parkinsons_model = pickle.load(open(f'{working_dir}/saved_models/parkinsons_model.sav', 'rb'))
 
+breast_cancer_model = pickle.load(open(f'{working_dir}/saved_models/breast_cancer_model.sav', 'rb'))
+
+maternal_health_model = pickle.load(open(f'{working_dir}/saved_models/maternal_health_model.sav', 'rb'))
+
 # sidebar for navigation
 with st.sidebar:
     selected = option_menu('Multiple Disease Prediction System',
 
                            ['Diabetes Prediction',
                             'Heart Disease Prediction',
-                            'Parkinsons Prediction'],
+                            'Parkinsons Prediction',
+                            'Breast Cancer Prediction',
+                            'Maternal Health Prediction'],
                            menu_icon='hospital-fill',
-                           icons=['activity', 'heart', 'person'],
+                           icons=['activity', 'heart', 'person', 'gender-female', 'person-check'],
                            default_index=0)
 
 
@@ -76,16 +82,17 @@ if selected == 'Diabetes Prediction':
         user_input = [Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin,
                       BMI, DiabetesPedigreeFunction, Age]
 
-        user_input = [float(x) for x in user_input]
+        if all(user_input):
+            user_input = [float(x) for x in user_input]
+            diab_prediction = diabetes_model.predict([user_input])
 
-        diab_prediction = diabetes_model.predict([user_input])
-
-        if diab_prediction[0] == 1:
-            diab_diagnosis = 'The person is diabetic'
+            if diab_prediction[0] == 1:
+                diab_diagnosis = 'The person is diabetic'
+            else:
+                diab_diagnosis = 'The person is not diabetic'
+            st.success(diab_diagnosis)
         else:
-            diab_diagnosis = 'The person is not diabetic'
-
-    st.success(diab_diagnosis)
+            st.error("Please fill in all the fields")
 
 # Heart Disease Prediction Page
 if selected == 'Heart Disease Prediction':
@@ -143,16 +150,17 @@ if selected == 'Heart Disease Prediction':
 
         user_input = [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]
 
-        user_input = [float(x) for x in user_input]
+        if all(user_input):
+            user_input = [float(x) for x in user_input]
+            heart_prediction = heart_disease_model.predict([user_input])
 
-        heart_prediction = heart_disease_model.predict([user_input])
-
-        if heart_prediction[0] == 1:
-            heart_diagnosis = 'The person is having heart disease'
+            if heart_prediction[0] == 1:
+                heart_diagnosis = 'The person is having heart disease'
+            else:
+                heart_diagnosis = 'The person does not have any heart disease'
+            st.success(heart_diagnosis)
         else:
-            heart_diagnosis = 'The person does not have any heart disease'
-
-    st.success(heart_diagnosis)
+            st.error("Please fill in all the fields")
 
 # Parkinson's Prediction Page
 if selected == "Parkinsons Prediction":
@@ -238,13 +246,156 @@ if selected == "Parkinsons Prediction":
                       RAP, PPQ, DDP,Shimmer, Shimmer_dB, APQ3, APQ5,
                       APQ, DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]
 
-        user_input = [float(x) for x in user_input]
+        if all(user_input):
+            user_input = [float(x) for x in user_input]
+            parkinsons_prediction = parkinsons_model.predict([user_input])
 
-        parkinsons_prediction = parkinsons_model.predict([user_input])
-
-        if parkinsons_prediction[0] == 1:
-            parkinsons_diagnosis = "The person has Parkinson's disease"
+            if parkinsons_prediction[0] == 1:
+                parkinsons_diagnosis = "The person has Parkinson's disease"
+            else:
+                parkinsons_diagnosis = "The person does not have Parkinson's disease"
+            st.success(parkinsons_diagnosis)
         else:
-            parkinsons_diagnosis = "The person does not have Parkinson's disease"
+            st.error("Please fill in all the fields")
 
-    st.success(parkinsons_diagnosis)
+
+# Breast Cancer Prediction Page
+if selected == 'Breast Cancer Prediction':
+
+    # page title
+    st.title('Breast Cancer Prediction using ML')
+
+    # getting the input data from the user
+    # Split into 5 columns for 30 features
+    col1, col2, col3, col4, col5 = st.columns(5)
+
+    with col1:
+        mean_radius = st.text_input('Mean Radius')
+    with col2:
+        mean_texture = st.text_input('Mean Texture')
+    with col3:
+        mean_perimeter = st.text_input('Mean Perimeter')
+    with col4:
+        mean_area = st.text_input('Mean Area')
+    with col5:
+        mean_smoothness = st.text_input('Mean Smoothness')
+
+    with col1:
+        mean_compactness = st.text_input('Mean Compactness')
+    with col2:
+        mean_concavity = st.text_input('Mean Concavity')
+    with col3:
+        mean_concave_points = st.text_input('Mean Concave Points')
+    with col4:
+        mean_symmetry = st.text_input('Mean Symmetry')
+    with col5:
+        mean_fractal_dimension = st.text_input('Mean Fractal Dimension')
+
+    with col1:
+        radius_error = st.text_input('Radius Error')
+    with col2:
+        texture_error = st.text_input('Texture Error')
+    with col3:
+        perimeter_error = st.text_input('Perimeter Error')
+    with col4:
+        area_error = st.text_input('Area Error')
+    with col5:
+        smoothness_error = st.text_input('Smoothness Error')
+
+    with col1:
+        compactness_error = st.text_input('Compactness Error')
+    with col2:
+        concavity_error = st.text_input('Concavity Error')
+    with col3:
+        concave_points_error = st.text_input('Concave Points Error')
+    with col4:
+        symmetry_error = st.text_input('Symmetry Error')
+    with col5:
+        fractal_dimension_error = st.text_input('Fractal Dimension Error')
+
+    with col1:
+        worst_radius = st.text_input('Worst Radius')
+    with col2:
+        worst_texture = st.text_input('Worst Texture')
+    with col3:
+        worst_perimeter = st.text_input('Worst Perimeter')
+    with col4:
+        worst_area = st.text_input('Worst Area')
+    with col5:
+        worst_smoothness = st.text_input('Worst Smoothness')
+
+    with col1:
+        worst_compactness = st.text_input('Worst Compactness')
+    with col2:
+        worst_concavity = st.text_input('Worst Concavity')
+    with col3:
+        worst_concave_points = st.text_input('Worst Concave Points')
+    with col4:
+        worst_symmetry = st.text_input('Worst Symmetry')
+    with col5:
+        worst_fractal_dimension = st.text_input('Worst Fractal Dimension')
+
+    # code for Prediction
+    bc_diagnosis = ''
+
+    # creating a button for Prediction
+    if st.button('Breast Cancer Test Result'):
+        user_input = [mean_radius, mean_texture, mean_perimeter, mean_area, mean_smoothness,
+                      mean_compactness, mean_concavity, mean_concave_points, mean_symmetry, mean_fractal_dimension,
+                      radius_error, texture_error, perimeter_error, area_error, smoothness_error,
+                      compactness_error, concavity_error, concave_points_error, symmetry_error, fractal_dimension_error,
+                      worst_radius, worst_texture, worst_perimeter, worst_area, worst_smoothness,
+                      worst_compactness, worst_concavity, worst_concave_points, worst_symmetry, worst_fractal_dimension]
+
+        if all(user_input):
+            user_input = [float(x) for x in user_input]
+            bc_prediction = breast_cancer_model.predict([user_input])
+
+            if bc_prediction[0] == 0:
+                bc_diagnosis = 'The breast cancer is Malignant'
+            else:
+                bc_diagnosis = 'The breast cancer is Benign'
+            st.success(bc_diagnosis)
+        else:
+            st.error("Please fill in all the fields")
+
+
+# Maternal Health Prediction Page
+if selected == 'Maternal Health Prediction':
+
+    # page title
+    st.title('Maternal Health Risk Prediction using ML')
+
+    # getting the input data from the user
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        age = st.text_input('Age')
+    with col2:
+        systolic_bp = st.text_input('Systolic BP')
+    with col3:
+        diastolic_bp = st.text_input('Diastolic BP')
+    with col1:
+        bs = st.text_input('Blood Sugar')
+    with col2:
+        body_temp = st.text_input('Body Temperature')
+    with col3:
+        heart_rate = st.text_input('Heart Rate')
+
+    # code for Prediction
+    maternal_diagnosis = ''
+
+    # creating a button for Prediction
+    if st.button('Maternal Health Test Result'):
+        user_input = [age, systolic_bp, diastolic_bp, bs, body_temp, heart_rate]
+        
+        if all(user_input):
+            user_input = [float(x) for x in user_input]
+
+            # The model returns 'high risk', 'low risk', 'mid risk'
+            maternal_prediction = maternal_health_model.predict([user_input])
+            
+            maternal_diagnosis = f'The predicted risk level is: {maternal_prediction[0]}'
+            st.success(maternal_diagnosis)
+        else:
+            st.error("Please fill in all the fields")

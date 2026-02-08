@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+.streamlit/
+saved_models/*.sav
+!saved_models/breast_cancer_model.sav
+!saved_models/diabetes_model.sav
+!saved_models/heart_disease_model.sav
+!saved_models/maternal_health_model.sav
+!saved_models/parkinsons_model.sav
