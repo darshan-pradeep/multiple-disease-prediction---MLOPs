@@ -1,0 +1,12 @@
+venv/
+.git/
+.gitignore
+__pycache__/
+*.pyc
+get_ranges.py
+get_mh_ranges.py
+colab_files_to_train_models/
+dataset/
+README.md
+Dockerfile
+.DS_Store
